@@ -51,10 +51,20 @@ define(['jquery'], function ($) {
             var fileContent;
 
             $scope.exportBook = function () {
-                console.log($scope.getBookHTML());
-                // var el = $('#book-content');
-                // var blob = new Blob([fileContent], {type : 'text/html;charset=utf-8'});
-                // saveAs(blob, $scope.book.title + ".html");
+                console.log($scope.exportHtmlBook.getHTML());
+                fileContent =
+                    "<html>" +
+                        "<head>" +
+                            "<title>" +
+                                $scope.book.title +
+                            "</title>" +
+                        "</head>" +
+                        "<body>" +
+                            $scope.exportHtmlBook.getHTML() +
+                        "</body>" +
+                    "</html>";
+                var blob = new Blob([fileContent], {type : 'text/html'});
+                saveAs(blob, $scope.book.title + ".html");
             };
 
         }]);

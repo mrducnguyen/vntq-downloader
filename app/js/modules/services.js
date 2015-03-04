@@ -16,6 +16,10 @@ define(['jquery'], function ($) {
          */
         .service('Books', ['$http', '$q', '$timeout', function ($http, $q, $timeout) {
 
+            var downloadImageAsBlob = function (imageUrl) {
+
+            };
+
             var parseChapter = function (book, chapterContent, firstChapter) {
                 var parts = chapterContent.split('--!!tach_noi_dung!!--'),
                     metaData = $($.parseHTML(parts[1])),

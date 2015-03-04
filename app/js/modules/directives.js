@@ -21,8 +21,10 @@ define(['jquery'], function ($) {
             return {
                 restrict: 'A', /* optional */
                 link: function (scope, el, attrs) {
-                    console.log(scope.book);
-                    scope.$parent.getBookHTML = function () {
+                    if (!scope.exportHtmlBook) {
+                        scope.$parent.exportHtmlBook = scope.exportHtmlBook = {};
+                    }
+                    scope.exportHtmlBook.getHTML = function () {
                         var clone = el.clone(),
                             toc = clone.find('#book-toc');
 

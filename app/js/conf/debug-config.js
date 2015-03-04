@@ -15,7 +15,7 @@ require.config({
         angular: '../libs/angular/angular',
 
         //FileSaver
-        fileSaver: '../libs/FileSaver/FileSaver',
+        fileSaver: '../libs/FileSaver.js/FileSaver',
 
         // Application Angular modules
         //

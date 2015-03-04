@@ -1,0 +1,14 @@
+{
+  "name": "vntq-ebook-download-app",
+  "description": "An application to download book on VNThuquan",
+  "version": "0.0.1",
+  "homepage": "http://ducn.co",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.3.x",
+    "jquery": "~2.1.3",
+    "requirejs": "~2.1.16",
+    "bootstrap": "~3.3.2"
+  }
+}

@@ -1,0 +1,18 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^chuyengiaviet\.net$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.chuyengiaviet\.net$
+RewriteRule ^/?$ "http\:\/\/chuyengiaviet\.com" [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^ng\-duc\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.ng\-duc\.com$
+RewriteRule ^/?$ "http\:\/\/ducn\.co" [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^vietexpert\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.vietexpert\.com$
+RewriteRule ^/?$ "http\:\/\/vietexperts\.com" [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^intelkidtoy\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.intelkidtoy\.com$
+RewriteRule ^/?$ "http\:\/\/intelkidtoys\.com" [R=301,L]
+

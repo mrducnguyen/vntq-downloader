@@ -99,21 +99,27 @@ define(['jquery'], function ($) {
             };
 
             var chapterDownloadFinish = function (book, idx) {
+                // remove the promise object out of the array
+                var i = 0,
+                    j = book.chapterDownloadThreads.length;
+                for (; i < j; i++) {
+                    if (book.chapterDownloadThreads[i].idx === idx) {
+                        book.chapterDownloadThreads.splice(i, 1);
+                        break;
+                    }
+                }
+
+                // start a new download thread if not complete yet
                 if (!book.stopChapterDownload && book.chapterDownloadLast < book.chapterToDownload) {
                     // start another downloading thread
-                    var i = 0,
-                        j = book.chapterDownloadThreads.length;
-                    for (; i < j; i++) {
-                        if (book.chapterDownloadThreads[i].idx === idx) {
-                            book.chapterDownloadThreads.splice(i, 1);
-                            break;
-                        }
-                    }
                     book.chapterDownloadThreads.push({
                         idx: book.chapterDownloadLast,
                         promise: getChapter(book, book.chapterDownloadLast)
                     });
                     book.chapterDownloadLast++;
+                } else if (j === 0) {
+                    // all finished
+                    book.downlingChapters = true;
                 }
             };
 

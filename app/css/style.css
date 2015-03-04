@@ -1,5 +1,31 @@
 @import url("http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,400italic");
 @import url("http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css");
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+.book-container {
+  height: 100%;
+  position: relative;
+}
+.book-control {
+  display: block;
+  padding: 15px 0;
+}
+.book-content {
+  display: block;
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.book-content .chapter-nav,
+.book-content .chapter-content {
+  height: 100%;
+  overflow: auto;
+}
 .ani-fade-show-hide {
   -webkit-transition: all linear 0.5s;
   transition: all linear 0.5s;

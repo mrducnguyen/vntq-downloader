@@ -1,0 +1,8 @@
+<div class="loading" ng-if="chapter.downloading">
+    <img src="img/loading-indicator.gif"> Downloading {{chapter.title}}...
+</div>
+<a name="chap{{$index + 1}}" /><h2>{{chapter.title}}</h2>
+<p ng-repeat="para in chapter.paragraphs">
+    {{para.content}}
+</p>
+<mbp:pagebreak/>

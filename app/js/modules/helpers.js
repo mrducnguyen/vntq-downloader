@@ -47,6 +47,22 @@ var helpers = {
         return Math.round(performance.memory.usedJSHeapSize / 10000, 2) / 100 + ' MB';
     },
 
+    saveToDisk: function (blobURL, fileName) {
+        var reader = new FileReader();
+        reader.readAsDataURL(blobURL);
+        reader.onload = function (event) {
+            var save = document.createElement('a');
+            save.href = event.target.result;
+            save.target = '_blank';
+            save.download = fileName || 'unknown file';
+
+            var event = document.createEvent('Event');
+            event.initEvent('click', true, true);
+            save.dispatchEvent(event);
+            (window.URL || window.webkitURL).revokeObjectURL(save.href);
+        };
+    },
+
     dateFromIso: function (dateString) {
         // test if browser support ISO date string or not
         // method from here: http://stackoverflow.com/questions/11020658/javascript-json-date-parse-in-ie7-ie8-returns-nan

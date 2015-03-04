@@ -14,6 +14,9 @@ require.config({
         //angular
         angular: '../libs/angular/angular',
 
+        //FileSaver
+        fileSaver: '../libs/FileSaver/FileSaver',
+
         // Application Angular modules
         //
         appModules: 'js/modules/app',
@@ -51,7 +54,7 @@ require.config({
         },
 
         'controllers': {
-            deps: ['filters']
+            deps: ['filters', 'fileSaver']
         },
 
         'helpers': {

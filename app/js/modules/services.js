@@ -16,8 +16,35 @@ define(['jquery'], function ($) {
          */
         .service('Books', ['$http', '$q', '$timeout', function ($http, $q, $timeout) {
 
-            var downloadImageAsBlob = function (imageUrl) {
+            // TODO:
+            // don't know why AngularJS $http won't work here,
+            // even using forceCors
+            var downloadBookImage = function (book) {
 
+                book.imgBlobDownloading = true;
+
+                var xhr = new XMLHttpRequest();
+
+                // Use JSFiddle logo as a sample image to avoid complicating
+                // this example with cross-domain issues.
+                xhr.open( "GET", book.imgUrl, true );
+
+                // Ask for the result as an ArrayBuffer.
+                xhr.responseType = "arraybuffer";
+
+                xhr.onload = function( e ) {
+                    // Obtain a blob: URL for the image data.
+                    var arrayBufferView = new Uint8Array( this.response );
+                    book.imgBlob = new Blob( [ arrayBufferView ], { type: book.imgMIME } );
+                    var reader = new FileReader();
+                    reader.readAsDataURL(book.imgBlob);
+                    reader.onloadend = function() {
+                        book.imgDataURL = reader.result;
+                        book.imgBlobDownloading = false;
+                    };
+                };
+
+                xhr.send();
             };
 
             var parseChapter = function (book, chapterContent, firstChapter) {
@@ -26,7 +53,7 @@ define(['jquery'], function ($) {
                     content = $($.parseHTML(parts[2])).filter('div'),
                     metaPara = metaData.find('p'),
                     paragraphs = [],
-                    nextParagraphStartChar;
+                    firstCharacter;
 
                 content.find('> div').each(function () {
                     var $this = $(this),
@@ -34,20 +61,20 @@ define(['jquery'], function ($) {
                         imgUrl;
                     if ($this.attr('id') == 'chuhoain') {
                         imgUrl = $this.find('img').attr('src');
-                        singleP.firstCharacter = {
+                        firstCharacter = {
                             letter: imgUrl.substring(imgUrl.lastIndexOf('.') - 1, imgUrl.lastIndexOf('.')),
                             imgUrl: imgUrl
                         };
-                        nextParagraphStartChar = singleP.firstCharacter.letter;
                     } else {
                         singleP.content = $this.text().replace(/^(\s|\n|\r|\n\r|\r\n)+|(\s|\n|\r|\n\r|\r\n)+$/g, '');
-                        if (nextParagraphStartChar) {
-                            singleP.content = nextParagraphStartChar + singleP.content;
-                            nextParagraphStartChar = false;
+                        if (firstCharacter) {
+                            singleP.firstCharacter = firstCharacter;
+                            singleP.content = firstCharacter.letter + singleP.content;
+                            firstCharacter = false;
                         }
-                    }
 
-                    paragraphs.push(singleP);
+                        paragraphs.push(singleP);
+                    }
                 });
 
                 if (firstChapter) {
@@ -55,6 +82,21 @@ define(['jquery'], function ($) {
                     book.editor = $(metaPara[2]).text();
                     book.shortDesc = $(metaPara[4]).text();
                     book.imgUrl = metaData.find('img').attr('src');
+                    book.imgExt = book.imgUrl.substring(book.imgUrl.lastIndexOf('.') + 1);
+                    switch (book.imgExt) {
+                        case "jpg":
+                            book.imgMIME = "image/jpeg";;
+                            break;
+                        case "png":
+                            book.imgMIME = "image/png";
+                            break;
+                        case "gif":
+                            book.imgMIME = "image/gif";
+                            break;
+                        default:
+                            book.imgMIME = "";
+                    }
+                    downloadBookImage(book);
                 }
 
                 return {
@@ -121,9 +163,11 @@ define(['jquery'], function ($) {
                         promise: getChapter(book, book.chapterDownloadLast)
                     });
                     book.chapterDownloadLast++;
-                } else if (j === 0) {
+                }
+
+                if (book.chapterDownloadThreads.length === 0) {
                     // all finished
-                    book.downlingChapters = true;
+                    book.downloadingChapters = false;
                 }
             };
 
@@ -196,7 +240,8 @@ define(['jquery'], function ($) {
                 },
 
                 stopDownloadChapters: function (book) {
-
+                    //TODO:
+                    // implement a stop download function?!
                 }
             };
         }]);

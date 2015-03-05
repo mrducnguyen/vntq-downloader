@@ -6,6 +6,14 @@ window.appConfig = {
     chapterRegex: /noidung1\('chuonghoi\.aspx\?tid=(.*)'\)/,
 
     concurrentChapterDownload: 5,
+    bookTemplate:   "<?xml version='1.0' encoding='UTF-8' ?>"+
+                    "<html>" +
+                        "<head>" +
+                            "<meta http-equiv='content-type' content='application/xhtml+xml; charset=UTF-8' >" +
+                            "<title>{bookTitle}</title>" +
+                        "</head>" +
+                        "<body>{bookContent}</body>" +
+                    "</html>",
 
     trustedSites: [
         // Allow same origin resource loads.

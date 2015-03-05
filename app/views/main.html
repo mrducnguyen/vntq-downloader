@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="col-xs-2 col-sm-2">
-        <button class="btn btn-primary" ng-click="exportBook()" ng-enabled="!book.downloading && !book.downloadingChapters">Export</button>
+        <button class="btn btn-primary" ng-click="exportBook()" ng-disabled="book.downloading || book.downloadingChapters || book.imgBlobDownloading">Export</button>
     </div>
 </div>
 <div class="row book-content">
@@ -26,7 +26,7 @@
             <img src="img/loading-indicator.gif">Downloading book, please wait...
         </div>
 
-        <p><img ng-if="book.imgUrl" ng-src="{{book.imgUrl}}"></p>
+        <p ng-show="book.imgUrl"><img ng-src="{{book.imgUrl}}"></p>
         <a name="start" /><h1>{{book.title}}</h1>
         <h2 class="text-italic" ng-show="book.shortDesc">{{book.shortDesc}}</h2>
         <h3>{{book.author}}</h3>
@@ -39,6 +39,6 @@
             <mbp:pagebreak/>
         </div>
 
-        <div class="single-chapter" ng-repeat="chapter in book.chapters" ng-include="'views/chapter.html'"></div>
+        <div class="single-chapter" ng-repeat="chapter in book.chapters" ng-include="'views/chapter-kindle.html'"></div>
     </div>
 </div>

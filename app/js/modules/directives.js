@@ -25,12 +25,28 @@ define(['jquery'], function ($) {
                         scope.$parent.exportHtmlBook = scope.exportHtmlBook = {};
                     }
                     scope.exportHtmlBook.getHTML = function () {
+                        var book = scope.book;
+                        if (scope[attrs.exportHtmlBook]) {
+                            book = scope[attrs.exportHtmlBook];
+                        }
+
+                        console.log(book);
+
+                        if (scope.exportHtmlBook.cachedHTML) {
+                            return scope.exportHtmlBook.cachedHTML;
+                        }
                         var clone = el.clone(),
                             toc = clone.find('#book-toc');
 
+                        if (book.imgDataURL) {
+                            var img = clone.find('p:first-child').find('img');
+                            img.attr('src', book.imgDataURL);
+                            console.log(img);
+                        }
+
                         toc.replaceWith(toc.contents());
 
-                        return clone.html();
+                        return (scope.exportHtmlBook.cachedHTML = clone.html());
                     };
                 }
             };

@@ -22,8 +22,7 @@ define(['jquery'], function ($) {
         .controller('DownloadController', ['$scope', '$templateRequest', '$compile', '$document', '$timeout', '$anchorScroll', '$location', 'Books', function ($scope, $templateRequest, $compile, $document, $timeout, $anchorScroll, $location, Books) {
 
             $scope.book = {
-                url: 'http://vnthuquan.net/truyen/truyen.aspx?tid=2qtqv3m3237nvntnvn4n3n31n343tq83a3q3m3237nvnmn',
-                downloading: false
+                url: 'http://vnthuquan.net/truyen/truyen.aspx?tid=2qtqv3m3237nvntnvn4n3n31n343tq83a3q3m3237nvnmn'
             };
 
             $scope.readyToShow = false;
@@ -39,31 +38,29 @@ define(['jquery'], function ($) {
             };
 
             $scope.doDownload = function () {
-                if ($scope.book.downloading) {
+                if ($scope.book && $scope.book.downloading) {
                     return;
                 }
+
+                var bookUrl = $scope.book.url;
+
+                // create a new book object?!
+                $scope.book = {
+                    url: bookUrl
+                };
 
                 Books.download($scope.book).then(function () {
                     Books.startDownloadChapters($scope.book, appConfig.concurrentChapterDownload, 3);
                 });
             };
 
-            var fileContent;
-
             $scope.exportBook = function () {
-                console.log($scope.exportHtmlBook.getHTML());
-                fileContent =
-                    "<html>" +
-                        "<head>" +
-                            "<title>" +
-                                $scope.book.title +
-                            "</title>" +
-                        "</head>" +
-                        "<body>" +
-                            $scope.exportHtmlBook.getHTML() +
-                        "</body>" +
-                    "</html>";
-                var blob = new Blob([fileContent], {type : 'text/html'});
+                var bookHTML = $scope.exportHtmlBook.getHTML(),
+                    fileContent = appConfig.bookTemplate;
+
+                fileContent = fileContent.replace('{bookTitle}', $scope.book.title);
+                fileContent = fileContent.replace('{bookContent}', bookHTML);
+                var blob = new Blob([fileContent], {type : 'text/html;charset=utf-8'});
                 saveAs(blob, $scope.book.title + ".html");
             };
 
